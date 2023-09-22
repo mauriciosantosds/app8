@@ -24,19 +24,20 @@ export const modificaNome = texto => {
 };
 
 export const cadastraUsuario = ({nome, email, senha}) => {
-  createUserWithEmailAndPassword(auth, email, senha)
-    .then(user => cadastroUsuarioSucesso())
-    .catch(erro => cadastroUsuarioErro(erro));
-  alert('Chegamos aqui' + nome);
-  return {
-    type: 'teste',
+  return dispatch => {
+    createUserWithEmailAndPassword(auth, email, senha)
+      .then(user => cadastroUsuarioSucesso(dispatch))
+      .catch(erro => cadastroUsuarioErro(erro, dispatch));
   };
 };
 
-const cadastroUsuarioSucesso = () => {
-  console.log('Usuário cadastrado!');
+const cadastroUsuarioSucesso = dispatch => {
+  dispatch({
+    type: 'sucesso',
+  });
 };
 
-const cadastroUsuarioErro = erro => {
-  console.log('mensagem', erro);
+const cadastroUsuarioErro = (erro, dispatch) => {
+  console.log(erro.code);
+  dispatch({type: 'cadastro_usuario_erro', payload: erro.code});
 };
