@@ -1,7 +1,7 @@
 const INITIAL_STATE = {
-  nome: 'Mauricio',
-  email: 'teste@teste.com',
-  senha: '1233',
+  nome: '',
+  email: '',
+  senha: '',
 };
 export default (state = INITIAL_STATE, action) => {
   if (action.type == 'modifica_email') {
