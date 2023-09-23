@@ -1,5 +1,6 @@
 import {createUserWithEmailAndPassword} from 'firebase/auth';
 import {auth} from '../config/Firebase';
+import {Actions} from 'react-native-router-flux';
 
 export const modificaEmail = texto => {
   console.log(texto);
@@ -33,8 +34,9 @@ export const cadastraUsuario = ({nome, email, senha}) => {
 
 const cadastroUsuarioSucesso = dispatch => {
   dispatch({
-    type: 'sucesso',
+    type: 'cadastra_usuario_sucesso',
   });
+  Actions.boasVindas();
 };
 
 const cadastroUsuarioErro = (erro, dispatch) => {
