@@ -1,5 +1,6 @@
 import {getAuth} from 'firebase/auth';
 import {initializeApp} from 'firebase/app';
+import {getDatabase} from 'firebase/database';
 const firebaseConfig = {
   apiKey: 'AIzaSyBDUWdFZxR3NmfgF56SwqBEXwpSXD-Afek',
   authDomain: 'whatsapp-clone-b6998.firebaseapp.com',
@@ -8,10 +9,12 @@ const firebaseConfig = {
   messagingSenderId: '958985265835',
   appId: '1:958985265835:web:f235e82791fd2b83cfcdee',
   measurementId: 'G-B1JGQNL04E',
+  databaseURL: 'https://whatsapp-clone-b6998-default-rtdb.firebaseio.com/',
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getDatabase(app);
 
-export {auth};
+export {auth, db};
