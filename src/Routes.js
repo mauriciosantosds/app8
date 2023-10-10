@@ -5,6 +5,7 @@ import FormLogin from './components/FormLogin';
 import FormCadastro from './components/FormCadastro';
 import BoasVindas from './components/BoasVindas';
 import Principal from './components/Principal';
+import AdicionarContato from './components/AdicionarContato';
 
 export default () => (
   <Router
@@ -29,6 +30,14 @@ export default () => (
         component={Principal}
         title="Principal"
         hideNavBar={true}
+        initial
+      />
+      <Scene
+        key="adicionarContato"
+        component={AdicionarContato}
+        title="Adicionar Contato"
+        hideNavBar={false}
+        back={true}
       />
     </Stack>
   </Router>

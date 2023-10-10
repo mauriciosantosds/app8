@@ -1,10 +1,33 @@
-import React from 'react';
-import {View, Text} from 'react-native';
+import * as React from 'react';
+import {View, useWindowDimensions} from 'react-native';
+import {TabView, SceneMap} from 'react-native-tab-view';
+import TabBarMenu from './TabBarMenu';
+import Conversas from './Conversas';
+import Contatos from './Contatos';
 
-const Principal = props => (
-  <View style={{marginTop: 100}}>
-    <Text>Página principal da aplicação</Text>
-  </View>
-);
+const renderScene = SceneMap({
+  1: Conversas,
+  2: Contatos,
+});
 
-export default Principal;
+const renderTabBar = props => <TabBarMenu {...props} />;
+
+export default function Principal() {
+  const layout = useWindowDimensions();
+
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    {key: '1', title: 'Conversas'},
+    {key: '2', title: 'Contatos'},
+  ]);
+
+  return (
+    <TabView
+      navigationState={{index, routes}}
+      renderScene={renderScene}
+      onIndexChange={setIndex}
+      initialLayout={{width: layout.width}}
+      renderTabBar={renderTabBar}
+    />
+  );
+}
