@@ -30,7 +30,6 @@ export default () => (
         component={Principal}
         title="Principal"
         hideNavBar={true}
-        initial
       />
       <Scene
         key="adicionarContato"

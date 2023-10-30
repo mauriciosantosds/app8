@@ -3,6 +3,6 @@ import AutenticacaoReducer from './AutenticacaoReducer';
 import AppReducer from './AppReducer';
 
 export default combineReducers({
-  AutenticacaoReducer: AutenticacaoReducer,
-  AppReducer: AppReducer,
+  AutenticacaoReducer,
+  AppReducer,
 });

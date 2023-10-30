@@ -1,6 +1,11 @@
-import {getAuth} from 'firebase/auth';
+import {
+  getAuth,
+  getReactNativePersistence,
+  initializeAuth,
+} from 'firebase/auth';
 import {initializeApp} from 'firebase/app';
 import {getDatabase} from 'firebase/database';
+import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 const firebaseConfig = {
   apiKey: 'AIzaSyBDUWdFZxR3NmfgF56SwqBEXwpSXD-Afek',
   authDomain: 'whatsapp-clone-b6998.firebaseapp.com',
@@ -14,7 +19,9 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(ReactNativeAsyncStorage),
+}); //getAuth(app);
 const db = getDatabase(app);
 
 export {auth, db};
