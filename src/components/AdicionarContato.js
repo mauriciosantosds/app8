@@ -20,12 +20,16 @@ const AdicionarContato = props => (
         color="#115E54"
         onPress={() => props.adicionaContato(props.adiciona_contato_email)}
       />
+      <Text style={{color: '#ff0000', fontSize: 20}}>
+        {props.cadastro_resultado_txt_erro}
+      </Text>
     </View>
   </View>
 );
 
 const mapStateToProps = state => ({
   adiciona_contato_email: state.AppReducer.adiciona_contato_email,
+  cadastro_resultado_txt_erro: state.AppReducer.cadastro_resultado_txt_erro,
 });
 
 export default connect(mapStateToProps, {
