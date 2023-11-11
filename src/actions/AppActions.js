@@ -2,9 +2,10 @@ import {
   MODIFICA_ADICIONA_CONTATO_EMAIL,
   ADICIONA_CONTATO_ERRO,
   ADICIONA_CONTATO_SUCESSO,
+  LISTA_CONTATO_USUARIO,
 } from './types';
 import b64 from 'base-64';
-import {ref, child, get, set, push} from 'firebase/database';
+import {ref, child, get, set, push, onValue} from 'firebase/database';
 import {db, auth} from '../config/Firebase';
 import _ from 'lodash';
 
@@ -65,4 +66,26 @@ const adicionaContatoErro = (erro, dispatch) =>
 const adicionaContatoSucesso = dispatch =>
   dispatch({
     type: ADICIONA_CONTATO_SUCESSO,
+    payload: true,
   });
+
+export const habilitaInclusaoContato = () => ({
+  type: ADICIONA_CONTATO_SUCESSO,
+  payload: false,
+});
+
+export const contatosUsuarioFetch = () => {
+  const {currentUser} = auth;
+  return dispatch => {
+    console.log(currentUser.email);
+    let emailUsuarioB64 = b64.encode(currentUser.email);
+    onValue(
+      child(ref(db), `/usuario_contatos/${emailUsuarioB64}`),
+      snapshot => {
+        const data = snapshot.val();
+        console.log(data);
+        dispatch({type: LISTA_CONTATO_USUARIO, payload: data});
+      },
+    );
+  };
+};

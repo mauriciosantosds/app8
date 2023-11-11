@@ -46,7 +46,7 @@ class AdicionarContato extends Component {
   }
   render() {
     return (
-      <View style={{flex: 1, justifyContent: 'center', padding: 10}}>
+      <View style={{flex: 1, justifyContent: 'center', padding: 20}}>
         {this.renderAdicionarContato()}
       </View>
     );
