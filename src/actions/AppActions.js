@@ -1,4 +1,8 @@
-import {MODIFICA_ADICIONA_CONTATO_EMAIL, ADICIONA_CONTATO_ERRO} from './types';
+import {
+  MODIFICA_ADICIONA_CONTATO_EMAIL,
+  ADICIONA_CONTATO_ERRO,
+  ADICIONA_CONTATO_SUCESSO,
+} from './types';
 import b64 from 'base-64';
 import {ref, child, get, set, push} from 'firebase/database';
 import {db, auth} from '../config/Firebase';
@@ -32,10 +36,11 @@ export const adicionaContato = email => {
             nome: dadosUsuario[0],
           })
             .then(() => {
-              console.log('Sucesso');
+              adicionaContatoSucesso(dispatch);
             })
             .catch(error => {
               console.error(error);
+              adicionaContatoErro(error.message, dispatch);
             });
         } else {
           console.log('usuario não existe');
@@ -50,3 +55,14 @@ export const adicionaContato = email => {
       });
   };
 };
+
+const adicionaContatoErro = (erro, dispatch) =>
+  dispatch({
+    type: ADICIONA_CONTATO_ERRO,
+    payload: erro,
+  });
+
+const adicionaContatoSucesso = dispatch =>
+  dispatch({
+    type: ADICIONA_CONTATO_SUCESSO,
+  });
