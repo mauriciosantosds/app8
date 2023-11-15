@@ -3,6 +3,7 @@ import {
   ADICIONA_CONTATO_ERRO,
   ADICIONA_CONTATO_SUCESSO,
   LISTA_CONTATO_USUARIO,
+  MODIFICA_MENSAGEM,
 } from './types';
 import b64 from 'base-64';
 import {ref, child, get, set, push, onValue} from 'firebase/database';
@@ -77,15 +78,53 @@ export const habilitaInclusaoContato = () => ({
 export const contatosUsuarioFetch = () => {
   const {currentUser} = auth;
   return dispatch => {
-    console.log(currentUser.email);
     let emailUsuarioB64 = b64.encode(currentUser.email);
     onValue(
       child(ref(db), `/usuario_contatos/${emailUsuarioB64}`),
       snapshot => {
         const data = snapshot.val();
-        console.log(data);
         dispatch({type: LISTA_CONTATO_USUARIO, payload: data});
       },
     );
+  };
+};
+
+export const modificaMensagem = texto => {
+  return {
+    type: MODIFICA_MENSAGEM,
+    payload: texto,
+  };
+};
+
+export const enviarMensagem = (mensagem, contatoNome, contatoEmail) => {
+  //dados do usuario (email)
+  const {currentUser} = auth;
+  const usuarioEmail = currentUser.email;
+  return dispatch => {
+    //conversao para base 64
+    const usuarioEmailB64 = b64.encode(usuarioEmail);
+    const contatoEmailB64 = b64.encode(contatoEmail);
+    console.log('user', usuarioEmail, 'contato', contatoEmail);
+    push(ref(db, `/mensagens/${usuarioEmailB64}/${contatoEmailB64}`), {
+      mensagem,
+      tipo: 'e',
+    })
+      .then(() => {
+        push(ref(db, `/mensagens/${contatoEmailB64}/${usuarioEmailB64}`), {
+          mensagem,
+          tipo: 'r',
+        })
+          .then(() => {
+            dispatch({
+              type: 'xyz',
+            });
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      })
+      .catch(error => {
+        console.error(error);
+      });
   };
 };

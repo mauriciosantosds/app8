@@ -12,3 +12,4 @@ export const MODIFICA_ADICIONA_CONTATO_EMAIL =
 export const ADICIONA_CONTATO_ERRO = 'adiciona_contato_erro';
 export const ADICIONA_CONTATO_SUCESSO = 'adiciona_contato_sucesso';
 export const LISTA_CONTATO_USUARIO = 'lista_contato_usuario';
+export const MODIFICA_MENSAGEM = 'modifica_mensagem';

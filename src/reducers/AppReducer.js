@@ -2,11 +2,13 @@ import {
   MODIFICA_ADICIONA_CONTATO_EMAIL,
   ADICIONA_CONTATO_ERRO,
   ADICIONA_CONTATO_SUCESSO,
+  MODIFICA_MENSAGEM,
 } from '../actions/types';
 const INITIAL_STATE = {
   adiciona_contato_email: '',
   cadastro_resultado_txt_erro: '',
   cadastro_resultado_inclusao: false,
+  mensagem: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -21,6 +23,9 @@ export default (state = INITIAL_STATE, action) => {
         cadastro_resultado_inclusao: action.payload,
         adiciona_contato_email: '',
       };
+    case MODIFICA_MENSAGEM:
+      console.log(action);
+      return {...state, mensagem: action.payload};
     default:
       return state;
   }

@@ -6,6 +6,7 @@ import FormCadastro from './components/FormCadastro';
 import BoasVindas from './components/BoasVindas';
 import Principal from './components/Principal';
 import AdicionarContato from './components/AdicionarContato';
+import Conversa from './components/Conversa';
 
 export default () => (
   <Router
@@ -37,6 +38,12 @@ export default () => (
         title="Adicionar Contato"
         hideNavBar={false}
         back={true}
+      />
+      <Scene
+        key="conversa"
+        component={Conversa}
+        title="Conversa"
+        hideNavBar={false}
       />
     </Stack>
   </Router>
