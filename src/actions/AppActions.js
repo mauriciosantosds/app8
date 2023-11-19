@@ -4,6 +4,9 @@ import {
   ADICIONA_CONTATO_SUCESSO,
   LISTA_CONTATO_USUARIO,
   MODIFICA_MENSAGEM,
+  LISTA_CONVERSA_USUARIO,
+  ENVIA_MENSAGEM_SUCESSO,
+  LISTA_CONVERSAS_USUARIOS,
 } from './types';
 import b64 from 'base-64';
 import {ref, child, get, set, push, onValue} from 'firebase/database';
@@ -116,7 +119,7 @@ export const enviarMensagem = (mensagem, contatoNome, contatoEmail) => {
         })
           .then(() => {
             dispatch({
-              type: 'xyz',
+              type: ENVIA_MENSAGEM_SUCESSO,
             });
           })
           .catch(error => {
@@ -125,6 +128,60 @@ export const enviarMensagem = (mensagem, contatoNome, contatoEmail) => {
       })
       .catch(error => {
         console.error(error);
+      })
+      .then(() => {
+        //armazenar cabecalho de conversa do usuario autenticado
+        set(
+          ref(db, `/usuario_conversas/${usuarioEmailB64}/${contatoEmailB64}`),
+          {
+            nome: contatoNome,
+            email: contatoEmail,
+          },
+        );
+      })
+      .then(() => {
+        get(child(ref(db), `contatos/${usuarioEmailB64}`)).then(snapshot => {
+          //armazenar cabecalho de conversa do contato
+          const dadosUsuario = snapshot.val();
+          console.log('nome usuario', dadosUsuario.nome);
+          set(
+            ref(db, `/usuario_conversas/${contatoEmailB64}/${usuarioEmailB64}`),
+            {
+              nome: dadosUsuario.nome,
+              email: usuarioEmail,
+            },
+          );
+        });
       });
+  };
+};
+
+export const conversaUsuarioFetch = contatoEmail => {
+  const {currentUser} = auth;
+  let usuarioEmailB64 = b64.encode(currentUser.email);
+  let contatoEmailB64 = b64.encode(contatoEmail);
+  return dispatch => {
+    onValue(
+      child(ref(db), `/mensagens/${usuarioEmailB64}/${contatoEmailB64}`),
+      snapshot => {
+        const data = snapshot.val();
+        dispatch({type: LISTA_CONVERSA_USUARIO, payload: data});
+      },
+    );
+  };
+};
+
+export const conversasUsuarioFetch = () => {
+  const {currentUser} = auth;
+  return dispatch => {
+    let usuarioEmailB64 = b64.encode(currentUser.email);
+    console.log(usuarioEmailB64);
+    onValue(
+      child(ref(db), `/usuario_conversas/${usuarioEmailB64}`),
+      snapshot => {
+        const data = snapshot.val();
+        dispatch({type: LISTA_CONVERSAS_USUARIOS, payload: data});
+      },
+    );
   };
 };
